@@ -34,3 +34,9 @@ http://localhost:9999/swagger-ui.html#/
 ## **Logs**
 O serviço contém logs e estes são armazenados na pasta ***logs*** dentro do projeto. Os logs são compactados e salvos de acordo com o dia em que foram capturados. <br />
 Para a visualização dos logs mais recentes, basta acessar o arquivo ***logs/catalogo-produtos.log***. <br />
+
+
+## **Testes Unitários**
+Para este serviço foi implementado testes unitários utilizando **JUnit**. <br />
+Os testes podem ser encontrados e executados no diretório *src/test/java*.
+
