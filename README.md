@@ -7,7 +7,7 @@ POST| http://localhost:9999/products | Criação de um produto
 PUT | http://localhost:9999/products/{id} | Atualização de um produto
 GET | http://localhost:9999/products/{id} | Busca um prouto por ID
 GET | http://localhost:9999/products | Lista de todos os produtos
-GET | http://localhost:9999/products/search | Lista de produtos filtraos
+GET | http://localhost:9999/products/search | Lista de produtos filtrados
 DELETE | http://localhost:9999/products/{id} | Deleção de um produto
 
 ## **Base de dados**
