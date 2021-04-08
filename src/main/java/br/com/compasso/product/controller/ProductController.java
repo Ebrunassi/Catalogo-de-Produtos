@@ -1,12 +1,12 @@
 package br.com.compasso.product.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
+import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +16,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
+
+import com.google.gson.Gson;
 
 import br.com.compasso.product.entity.Product;
 import br.com.compasso.product.model.Return;
 import br.com.compasso.product.repository.ProductRepository;
-import br.com.compasso.product.service.ProductService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -32,30 +31,28 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 
-@Api(value = "Compasso - 'Product' - Java Pleno Project")
+@Api(value = "Compasso - 'Catálogo de Produtos'")
 @RestController
 @RequestMapping("/products")
 public class ProductController {
 	@Autowired
-	private ProductRepository productRepository;
-	@Autowired
-	private ProductService productService;
+	private ProductRepository productRepository;	
+	protected Logger log = (Logger) LogManager.getLogger(ProductController.class);
+	protected Gson gson = new Gson();
 	
 	@ApiOperation(value = "Realiza o cadastro de um produto")
-	@ApiResponses(value = @ApiResponse(code = 200, message = "OK", response = Product.class))
+	@ApiResponses(value = @ApiResponse(code = 201, message = "OK", response = Product.class))
 	@RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Product> createProduct(@ApiParam(value ="Body contendo definições do produto")
-		@RequestBody @Valid Product product){
+	public ResponseEntity<Product> createProduct(@ApiParam(value ="Body contendo definições do produto") @RequestBody @Valid Product product){
 		
 		try {			
-			Product retorno = productRepository.save(product);
-			return  ResponseEntity.status(201).body(retorno);
+			Product retorno = productRepository.save(product);		// Salva produto na base
+			log.info("Produto salvo com sucesso: '{}'", gson.toJson(retorno));
+			return  ResponseEntity.status(201).body(retorno);		// HTTP 201 - criado com sucesso
 		}catch(Exception e) {
-//			return ResponseEntity.status(400).body(new Return(400,"Erro ao salvar produto"));
-		}
-		return null;
-
-				
+			log.error("Erro ao salvar produto: {}", e.getMessage());
+			return ResponseEntity.status(500).build();				// Erro de processamento
+		}				
 	}
 	
 	@ApiOperation(value = "Realiza a alteração dos dados de um produto")
@@ -66,15 +63,17 @@ public class ProductController {
 		
 		try {
 			Integer updated = productRepository.updateProduct(id, product.getName(), product.getDescription(), product.getPrice());
-			if(updated > 0)				
-				return ResponseEntity.status(200).body(new Product(id,product));
-			else
-				return ResponseEntity.status(404).build();				
+			if(updated > 0) {										// Caso tenha encontrado e alterado algum produto na base com o id informado
+				log.info("Dados do produto alterados com sucesso:'{}'", gson.toJson(updated));
+				return ResponseEntity.status(200).body(new Product(id,product));	// HTTP 200 - alteracao realizada
+			}else {													// Caso não tenha achado nenhum produto na base com o id informado
+				log.info("Produto com id '{}' nao foi encontrado", id);
+				return ResponseEntity.status(404).build();			// HTTP 404 - Produto nao encontrado
+			}
 		}catch(Exception e) {
-			e.printStackTrace();
-//			return ResponseEntity.status(400).body(new Return(400,"Erro ao salvar produto"));
-		}
-		return null;			
+			log.error("Erro ao salvar produto: {}", e.getMessage());
+			return ResponseEntity.status(500).build();								// Erro de processamento
+		}		
 	}
 	
 	@ApiOperation(value = "Resgata informações a respeito de um produto já cadastrado")
@@ -84,15 +83,17 @@ public class ProductController {
 		
 		try {			
 			Optional<Product> prod = productRepository.findById(id);
-			if(prod.isPresent())				
-				return ResponseEntity.status(201).body(prod.get());
-			else
-				return ResponseEntity.status(404).build();				
+			if(prod.isPresent()) {											// Caso encontre o produto na base
+				log.info("Produtos encontrados na base de dados:'{}'", gson.toJson(prod));				
+				return ResponseEntity.status(200).body(prod.get());			//  HTTP 200 - Produto encontrado + dados
+			}else {
+				log.info("Produto com id '{}' nao foi encontrado", id);				
+				return ResponseEntity.status(404).build();					// HTTP 404 - Produto nao foi encontrado
+			}
 		}catch(Exception e) {
-			e.printStackTrace();
-//			return ResponseEntity.status(400).body(new Return(400,"Erro ao salvar produto"));
-		}
-		return null;			
+			log.error("Erro ao salvar produto: {}", e.getMessage());
+			return ResponseEntity.status(500).build();						// Erro de processamento
+		}		
 	}
 	
 	@ApiOperation(value = "Resgata informações a respeito de todos os produtos já cadastrados")
@@ -101,16 +102,13 @@ public class ProductController {
 	public ResponseEntity<Iterable<Product>> searchAllProduct(){
 		
 		try {			
-			Iterable<Product> prod = productRepository.findAll();
-			if(prod.iterator().hasNext())				
-				return ResponseEntity.status(200).body(prod);
-			else
-				return ResponseEntity.status(200).body(prod);				
+			Iterable<Product> prod = productRepository.findAll();			// Procura por todos os produtos cadastrados previamente na base
+			log.info("Produtos encontrados na base de dados:'{}'", gson.toJson(prod));
+			return ResponseEntity.status(200).body(prod);					// HTTP 200 - Lista dos produtos encontrados + dados	
 		}catch(Exception e) {
-			e.printStackTrace();
-//			return ResponseEntity.status(400).body(new Return(400,"Erro ao salvar produto"));
-		}
-		return null;			
+			log.error("Erro ao salvar produto: {}", e.getMessage());
+			return ResponseEntity.status(500).build();						// Erro de processamento
+		}			
 	}
 	
 	@ApiOperation(value = "Resgata uma lista contendo todos os produtos já cadastrados e filtrados por parâmetros")
@@ -122,15 +120,13 @@ public class ProductController {
 			@Param(value = "max_price") @ApiParam(value = "Preço máximo") Double max_price){
 		
 		try {			
-			List<Product> prod = productRepository.searchProductByParameters(q,min_price,max_price);				
-			return ResponseEntity.status(200).body(prod);
-			
-							
+			List<Product> prod = productRepository.searchProductByParameters(q,min_price,max_price);	// Procura pelos produtos com base nos parametros informados
+			log.info("Produtos encontrados:'{}'", gson.toJson(prod));
+			return ResponseEntity.status(200).body(prod);			// HTTP 200 - Lista dos produtos encontrados + dados
 		}catch(Exception e) {
-			e.printStackTrace();
-//			return ResponseEntity.status(400).body(new Return(400,"Erro ao salvar produto"));
-		}
-		return null;			
+			log.error("Erro ao salvar produto: {}", e.getMessage());
+			return ResponseEntity.status(500).build();				// Erro de processamento
+		}		
 	}
 	
 	@ApiOperation(value = "Realiza a remoção de um produto previamente cadastrado")
@@ -141,17 +137,22 @@ public class ProductController {
 		try {			
 			if(productRepository.existsById(id)) {
 				productRepository.deleteById(id);
-				return ResponseEntity.status(200).build();
+				log.info("Produto com id '{}' foi deletado com sucesso", id);
+				return ResponseEntity.status(200).build();			// HTTP 200 - Produto deletado com sucesso
 			}else {
-				return ResponseEntity.status(404).build();	
+				log.info("Produto com id '{}' nao foi encontrado", id);
+				return ResponseEntity.status(404).build();			// HTTP 404 - Produto nao encontrado
 			}						
 		}catch(Exception e) {
-			e.printStackTrace();
-//			return ResponseEntity.status(400).body(new Return(400,"Erro ao salvar produto"));
+			log.error("Erro ao salvar produto: {}", e.getMessage());
+			return ResponseEntity.status(500).build();				// Erro de processamento
 		}
-		return null;			
 	}
 
+	/*
+	 *  Todas as vezes que ocorrer um erro de validacao dos campos do objeto Product,
+	 *   este metodo sera chamado e retornara HTTP 400 junto com a mensagem do erro
+	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Return> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {	
 	    return ResponseEntity.status(400).body(new Return(400,ex.getFieldErrors().get(0).getDefaultMessage()));     	   

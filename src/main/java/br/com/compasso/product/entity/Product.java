@@ -14,10 +14,9 @@ import br.com.compasso.product.model.Return;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-public class Product /*extends Return*/{
+public class Product{
 
-	private static final
-	long serialVersionUID = 7381009935406313836L;
+	private static final long serialVersionUID = 7381009935406313836L;
 	@Id
 	@ApiModelProperty(hidden = true)
     private String id;
@@ -32,11 +31,7 @@ public class Product /*extends Return*/{
 	@ApiModelProperty(example = "10.5")
 	private Double price;
 	
-//	public Product(Integer status_code, String message) {
-//		super(status_code, message);
-//	}	
 	public Product() {}
-	
 
 	public Product(String id, Product product) {	
 	this.id = id;

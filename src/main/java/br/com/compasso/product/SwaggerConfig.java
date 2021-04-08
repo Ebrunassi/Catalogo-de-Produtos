@@ -31,7 +31,7 @@ public class SwaggerConfig {
 	
 	private ApiInfo metaInfo() {
 		ApiInfo apiInfo = new ApiInfo(
-				"Compasso UOL - Java Pleno Test",
+				"Compasso UOL - Java Test",
 				"Catálogo de Produtos",
 				"1.0",
 				"Terms of Service",

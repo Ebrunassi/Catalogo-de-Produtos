@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
 import br.com.compasso.product.entity.Product;
 
 public interface ProductRepository extends CrudRepository<Product,String>{
@@ -19,8 +21,8 @@ public interface ProductRepository extends CrudRepository<Product,String>{
 	@Query("SELECT p FROM Product p "
 			+ "WHERE ((?1 is null OR upper(p.name) LIKE CONCAT('%',upper(?1),'%')) "
 			+ "OR (?1 is null OR upper(p.description) LIKE CONCAT('%',upper(?1),'%'))) "
-			+ "AND (?2 is null OR p.price > ?2) "
-			+ "AND (?3 is null OR p.price < ?3)")
+			+ "AND (?2 is null OR p.price >= ?2) "
+			+ "AND (?3 is null OR p.price <= ?3)")
 	List<Product> searchProductByParameters(String q, Double min_price, Double max_price);
 	
 }

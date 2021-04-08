@@ -1,0 +1,10 @@
+INFO  2021-04-07 21:43:04.572 [main] ProductController - Produto salvo com sucesso. Id '60a9cc04-1284-4629-8b31-be2ca72d529c'
+INFO  2021-04-07 21:44:16.636 [http-nio-9999-exec-3] ProductController - Produto salvo com sucesso. Id '2a230a22-9b52-40af-8d79-289ca6fd7f49'
+INFO  2021-04-07 22:19:15.292 [main] ProductController - Produto com id 'another-id-that-doesnt-exists' nao foi encontrado
+INFO  2021-04-07 22:19:16.201 [main] ProductController - Produto com id 'another-different-id' nao foi encontrado
+INFO  2021-04-07 22:19:16.470 [main] ProductController - Produtos encontrados na base de dados:'{"value":{"id":"87ee7ea1-e72c-4ab9-b418-5e0f92769aa0","name":"First product","description":"Description: test of product","price":10.5}}'
+INFO  2021-04-07 22:19:16.525 [main] ProductController - Produtos encontrados na base de dados:'[{"id":"1d588d80-7d41-495c-a653-203d2dd894da","name":"First product","description":"Description: test of product","price":10.5},{"id":"31171122-dd31-45e9-944b-51c70f3e41e7","name":"Second product","description":"Description: New test of product","price":99.9}]'
+INFO  2021-04-07 22:19:16.562 [main] ProductController - Produto com id 'f0435031-b73b-481f-80ba-ac2a9b0bf642' foi deletado com sucesso
+INFO  2021-04-07 22:19:16.584 [main] ProductController - Dados do produto alterados com sucesso:'1'
+INFO  2021-04-07 22:19:16.630 [main] ProductController - Produtos encontrados:'[{"id":"99060d84-eb96-452e-b8ef-da46b2132d14","name":"Second product","description":"Description: New test of product","price":99.9}]'
+INFO  2021-04-07 22:19:16.673 [main] ProductController - Produto salvo com sucesso: '{"id":"c1cb5c54-ae42-4f7a-a81d-749b14f5a203","name":"Test","description":"Description: test of product","price":10.5}'
