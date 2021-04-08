@@ -18,7 +18,7 @@ http://localhost:9999/h2-console
 
 Onde a autenticação de acesso deve ser feita utilizando os seguintes valores:
 Campo de configuração | Valor a ser atribuido
-----|------|--------
+----|------
 Save Settings| Generic H2 (Embedded)
 Setting name | Generic H2 (Embedded)
 Driver Class | org.h2.Driver
