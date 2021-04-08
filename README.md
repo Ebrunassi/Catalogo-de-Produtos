@@ -30,3 +30,7 @@ Password | 123
 É possível visualizar mais informações a respeito dos endpoints deste serviço e até mesmo testá-los através do swagger implementado. <br />
 Uma vez que o projeto esteja em execução, é possível acessar o swagger através do link: <br />
 http://localhost:9999/swagger-ui.html#/
+
+## **Logs**
+O serviço contém logs e estes são armazenados na pasta ***logs*** dentro do projeto. Os logs são compactados e salvos de acordo com o dia em que foram capturados. <br />
+Para a visualização dos logs mais recentes, basta acessar o arquivo ***logs/catalogo-produtos.log***. <br />

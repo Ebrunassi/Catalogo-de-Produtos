@@ -60,3 +60,4 @@ INFO  2021-04-07 22:48:55.423 [http-nio-9999-exec-8] ProductController - Produto
 INFO  2021-04-07 22:49:01.153 [http-nio-9999-exec-10] ProductController - Produtos encontrados:'[{"id":"1c28d593-61e0-4bec-8d7e-7930f1b3ac46","name":"Product Name","description":"Product Description","price":50.5}]'
 INFO  2021-04-07 22:49:04.140 [http-nio-9999-exec-1] ProductController - Produtos encontrados:'[{"id":"1c28d593-61e0-4bec-8d7e-7930f1b3ac46","name":"Product Name","description":"Product Description","price":50.5}]'
 INFO  2021-04-07 22:49:04.926 [http-nio-9999-exec-9] ProductController - Produtos encontrados:'[{"id":"1c28d593-61e0-4bec-8d7e-7930f1b3ac46","name":"Product Name","description":"Product Description","price":50.5}]'
+INFO  2021-04-08 09:21:05.724 [http-nio-9999-exec-2] ProductController - Produto salvo com sucesso: '{"id":"8e9a468b-dc09-474e-8f40-ce7f8b0bc466","name":"Produto do Brasil","description":"Descricao do produto: Basico","price":8.5}'
